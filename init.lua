@@ -4,7 +4,7 @@ vim.opt.relativenumber = true
 vim.opt.tabstop        = 4
 vim.opt.shiftwidth     = 4
 vim.opt.expandtab      = true
-vim.opt.clipboard      = "unnamedplus" -- use system clipboard
+vim.opt.clipboard      = "unnamedplus" 
 
 local map = vim.keymap.set
 map("i", "jk", "<Esc>")                       
@@ -35,7 +35,6 @@ require("lazy").setup({
 
   { "neovim/nvim-lspconfig",
     config = function()
-      -- new API: vim.lsp.config (nvim 0.11+)
       vim.lsp.config("gopls",  {})
       vim.lsp.config("pyright", {})
       vim.lsp.enable({ "gopls", "pyright" })
@@ -56,9 +55,9 @@ require("lazy").setup({
       local cmp = require("cmp")
       cmp.setup({
         mapping = cmp.mapping.preset.insert({
-          ["<Tab>"]   = cmp.mapping.select_next_item(), -- next suggestion
-          ["<S-Tab>"] = cmp.mapping.select_prev_item(), -- prev suggestion
-          ["<CR>"]    = cmp.mapping.confirm({ select = true }), -- confirm
+          ["<Tab>"]   = cmp.mapping.select_next_item(), 
+          ["<S-Tab>"] = cmp.mapping.select_prev_item(), 
+          ["<CR>"]    = cmp.mapping.confirm({ select = true }), 
         }),
         sources = { { name = "nvim_lsp" }, { name = "buffer" } },
       })
