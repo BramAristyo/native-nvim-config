@@ -63,10 +63,15 @@ require("lazy").setup({
       })
     end },
 
-    {
-        "windwp/nvim-autopairs",
+    {   "windwp/nvim-autopairs",
         event = "InsertEnter",
-        config = true
-    },  
+        config = true },  
+        {
+    "rebelot/kanagawa.nvim",
+    priority = 1000,
+    config = function()
+      vim.cmd.colorscheme("kanagawa-wave")
+    end,
+  },
     
 })
