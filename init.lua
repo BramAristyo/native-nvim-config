@@ -1,6 +1,6 @@
 vim.g.mapleader        = " "
 vim.opt.number         = true
-vim.opt.relativenumber = true
+vim.opt.relativenumber = false 
 vim.opt.tabstop        = 4
 vim.opt.shiftwidth     = 4
 vim.opt.expandtab      = true
@@ -24,7 +24,7 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
 
-  { "williamboman/mason.nvim",            config = true },
+  { "williamboman/mason.nvim", config = true },
   { "williamboman/mason-lspconfig.nvim",
     config = function()
       require("mason-lspconfig").setup({
@@ -63,4 +63,10 @@ require("lazy").setup({
       })
     end },
 
+    {
+        "windwp/nvim-autopairs",
+        event = "InsertEnter",
+        config = true
+    },  
+    
 })
