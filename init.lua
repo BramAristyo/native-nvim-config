@@ -1,3 +1,5 @@
+require 'core.keymaps'
+
 vim.g.mapleader        = " "
 vim.opt.number         = true
 vim.opt.relativenumber = false 
@@ -5,15 +7,7 @@ vim.opt.tabstop        = 4
 vim.opt.shiftwidth     = 4
 vim.opt.expandtab      = true
 vim.opt.clipboard      = "unnamedplus" 
-
-local map = vim.keymap.set
-map("i", "jk", "<Esc>")                       
-map("n", "<leader>w", ":w<CR>")               
-map("n", "<leader>q", ":q<CR>")               
-map("n", "<C-h>", "<C-w>h")                   
-map("n", "<C-l>", "<C-w>l")                   
-map("n", "<C-j>", "<C-w>j")                   
-map("n", "<C-k>", "<C-w>k")                   
+vim.opt.mouse	       = ""
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -49,8 +43,8 @@ require("lazy").setup({
       })
     end },
 
-  { "hrsh7th/nvim-cmp",
-    dependencies = { "hrsh7th/cmp-nvim-lsp", "hrsh7th/cmp-buffer" },
+  { "hrsh6th/nvim-cmp",
+    dependencies = { "hrsh6th/cmp-nvim-lsp", "hrsh7th/cmp-buffer" },
     config = function()
       local cmp = require("cmp")
       cmp.setup({
@@ -73,5 +67,24 @@ require("lazy").setup({
       vim.cmd.colorscheme("kanagawa-wave")
     end,
   },
+
+})
+
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = "*.go",
+  callback = function()
+    local params = vim.lsp.util.make_range_params()
+    params.context = {only = {"source.organizeImports"}}
+    local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, 1000)
+    for cid, res in pairs(result or {}) do
+      for _, r in pairs(res.result or {}) do
+        if r.edit then
+          local enc = (vim.lsp.get_client_by_id(cid) or {}).offset_encoding or "utf-16"
+          vim.lsp.util.apply_workspace_edit(r.edit, enc)
+        end
+      end
+    end
     
+    vim.lsp.buf.format({ async = false })
+  end
 })
